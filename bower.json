@@ -9,7 +9,8 @@
     "jasmine": "~2.0.0",
     "mocha": "~1.20.1",
     "sinon": "~1.10.2",
-    "assert": "~0.1.0"
+    "assert": "~0.1.0",
+    "backbone-react-component": "~0.8.1"
   },
   "devDependencies": {}
 }

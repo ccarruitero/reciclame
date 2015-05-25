@@ -3,12 +3,18 @@ require.config({
     "underscore": "../components/lodash/dist/lodash.underscore",
     "jquery": "../components/jquery/dist/jquery",
     "backbone": "../components/backbone/backbone",
+    "react": "../components/react/react",
+    "react-backbone": "../components/backbone-react-component/lib/component",
     "mapbox": "../vendor/mapbox"
   },
 
   shim: {
-    'mapbox': {
-      exports: 'L'
+    "mapbox": {
+      exports: "L"
+    },
+
+    "jquery": {
+      exports: "$"
     }
   }
 });
@@ -21,6 +27,6 @@ require([
 ], function(app, Router, Config, Map) {
   app.router = new Router();
 
-  Map.init(Config);
   Backbone.history.start({ pushState: true, root: app.root });
+  //Map.init(Config);
 });
