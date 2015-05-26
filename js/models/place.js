@@ -12,6 +12,10 @@ define(["backbone", "config"], function(Backbone, Config) {
       address: '',
       lat: '',
       lng: ''
+    },
+
+    parse: function(data) {
+      return data.place || data;
     }
   });
 
