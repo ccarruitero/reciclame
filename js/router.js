@@ -6,7 +6,8 @@ define([
   "views/place_detail_view",
   "models/place",
   "views/map_view",
-  "config"
+  "config",
+  "views/login_view"
 ], function(
   Backbone,
   Places,
@@ -15,7 +16,8 @@ define([
   PlaceDetailView,
   Place,
   MapView,
-  Config
+  Config,
+  LoginView
 ) {
   "use strict";
 
@@ -26,6 +28,7 @@ define([
                      _.bind(this.clickInterceptor, this));
       this.setMenu();
       this.initMap();
+      this.mainEl = document.getElementById("main");
     },
 
     close: function () {
@@ -64,8 +67,13 @@ define([
 
     routes: {
       "": "places",
-      "places/:id": "placeDetail"
+      "places": "places",
+      "places/:id": "placeDetail",
+      "places/:id/edit": "placeEdit",
+      "login": "login"
     },
+
+    requiresAuth: ["placeEdit"],
 
     initMap: function() {
       var mapEl = document.getElementById("map");
@@ -77,30 +85,32 @@ define([
 
     places: function() {
       var that = this;
-      var mountEl = document.getElementById("main");
       console.log("Welcome to your / route.");
       this.placeList = new Places();
       this.placeList.fetch({
         success: function() {
-          React.render(React.createElement(PlaceListView, {collection:that.placeList}), mountEl);
+          React.render(React.createElement(PlaceListView, {collection:that.placeList}), that.mainEl);
         }
       });
     },
 
     placeDetail: function(id) {
       var that = this;
-      var mountEl = document.getElementById("main");
       if (this.placeList === undefined) {
         this.place = new Place({id: id});
         this.place.fetch({
           success: function() {
-            React.render(React.createElement(PlaceDetailView, {model: that.place}), mountEl);
+            React.render(React.createElement(PlaceDetailView, {model: that.place}), that.mainEl);
           }
         });
       } else {
         var place = this.placeList.get(id);
-        React.render(React.createElement(PlaceDetailView, {model: place}), mountEl);
+        React.render(React.createElement(PlaceDetailView, {model: place}), that.mainEl);
       }
+    },
+
+    login: function() {
+      React.render(React.createElement(LoginView, null), this.mainEl);
     },
 
     setMenu: function() {

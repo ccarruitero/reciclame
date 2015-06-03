@@ -15,18 +15,44 @@ require.config({
 
     "jquery": {
       exports: "$"
+    },
+
+    "underscore": {
+      exports: "_"
     }
   }
 });
 
 require([
+  "underscore",
   "app",
   "router",
-  "config",
-  "map"
-], function(app, Router, Config, Map) {
+  "models/auth"
+], function(_, app, Router, Auth) {
   app.router = new Router();
+  app.auth = new Auth();
+
+  Backbone.history.on("route", function(router, route, params) {
+    var needsAuth = _.contains(router.requiresAuth, route);
+    var authenticated = app.auth.get('isAuthenticated');
+    var lastPath = Backbone.history.getFragment();
+
+    if (lastPath !== 'login') {
+      app.lastPath = lastPath;
+    }
+
+    if (!authenticated && needsAuth) {
+      Backbone.history.navigate("/login", true);
+    }
+  });
 
   Backbone.history.start({ pushState: true, root: app.root });
-  //Map.init(Config);
+
+  // handle authentication message
+  function receiveMessage(event) {
+    var user = JSON.parse(event.data);
+    app.auth.setAuth(user);
+  }
+
+  window.addEventListener("message", receiveMessage, false);
 });

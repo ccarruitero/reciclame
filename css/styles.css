@@ -7,3 +7,22 @@
   z-index: 10;
   background: rgb(250,250,250);
 }
+
+.login-wrap {
+  width: 400px;
+  height: 200px;
+  background: white;
+  position: absolute;
+  top: 30%;
+  left: 35%;
+  z-index: 10;
+}
+
+.login-bg {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  z-index: 5;
+}
