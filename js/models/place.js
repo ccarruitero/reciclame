@@ -14,8 +14,9 @@ define(["backbone", "config"], function(Backbone, Config) {
       lng: ''
     },
 
-    parse: function(data) {
-      return data.place || data;
+    parse: function(response, options) {
+      if (options.saved) return this.attributes;
+      return response.place || response;
     }
   });
 

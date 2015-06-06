@@ -1,19 +1,23 @@
 define([
   "backbone",
+  "underscore",
   "collections/places",
   "react",
   "views/place_list_view",
   "views/place_detail_view",
+  "views/place_edit_view",
   "models/place",
   "views/map_view",
   "config",
   "views/login_view"
 ], function(
   Backbone,
+  _,
   Places,
   React,
   PlaceListView,
   PlaceDetailView,
+  PlaceEditView,
   Place,
   MapView,
   Config,
@@ -89,7 +93,7 @@ define([
       this.placeList = new Places();
       this.placeList.fetch({
         success: function() {
-          React.render(React.createElement(PlaceListView, {collection:that.placeList}), that.mainEl);
+          that.loadView(React.createElement(PlaceListView, {collection:that.placeList}));
         }
       });
     },
@@ -100,17 +104,39 @@ define([
         this.place = new Place({id: id});
         this.place.fetch({
           success: function() {
-            React.render(React.createElement(PlaceDetailView, {model: that.place}), that.mainEl);
+            that.loadView(React.createElement(PlaceDetailView, {model: that.place}));
           }
         });
       } else {
         var place = this.placeList.get(id);
-        React.render(React.createElement(PlaceDetailView, {model: place}), that.mainEl);
+        this.loadView(React.createElement(PlaceDetailView, {model: place}));
+      }
+    },
+
+    placeEdit: function(id) {
+      var that = this;
+      if (this.placeList === undefined) {
+        this.place = new Place({id: id});
+        this.xhr = this.place.fetch({
+          success: function() {
+            that.loadView(React.createElement(PlaceEditView, {model: that.place}));
+          }
+        });
+      } else {
+        var place = this.placeList.get(id);
+        this.loadView(React.createElement(PlaceEditView, {model: place}));
       }
     },
 
     login: function() {
-      React.render(React.createElement(LoginView, null), this.mainEl);
+      if (this.xhr !== undefined) {
+        this.xhr.abort();
+      }
+      this.loadView(React.createElement(LoginView, null));
+    },
+
+    loadView: function(newView) {
+      React.render(newView, this.mainEl);
     },
 
     setMenu: function() {

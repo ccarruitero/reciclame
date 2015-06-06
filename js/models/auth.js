@@ -32,7 +32,7 @@ define(["backbone", "app"], function(Backbone, app) {
       var that = this;
 
       if (userToken !== null) {
-        that.set('isAuthenticated', true);
+        that.set({isAuthenticated: true, userToken: userToken});
       }
     }
   });
