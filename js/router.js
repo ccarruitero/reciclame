@@ -6,6 +6,7 @@ define([
   "views/place_list_view",
   "views/place_detail_view",
   "views/place_edit_view",
+  "views/place_new_view",
   "models/place",
   "views/map_view",
   "config",
@@ -18,6 +19,7 @@ define([
   PlaceListView,
   PlaceDetailView,
   PlaceEditView,
+  PlaceNewView,
   Place,
   MapView,
   Config,
@@ -72,12 +74,13 @@ define([
     routes: {
       "": "places",
       "places": "places",
+      "places/new": "newPlace",
       "places/:id": "placeDetail",
       "places/:id/edit": "placeEdit",
       "login": "login"
     },
 
-    requiresAuth: ["placeEdit"],
+    requiresAuth: ["placeEdit", "newPlace"],
 
     initMap: function() {
       var mapEl = document.getElementById("map");
@@ -126,6 +129,11 @@ define([
         var place = this.placeList.get(id);
         this.loadView(React.createElement(PlaceEditView, {model: place}));
       }
+    },
+
+    newPlace: function() {
+      var place = new Place();
+      this.loadView(React.createElement(PlaceNewView, {model: place}));
     },
 
     login: function() {

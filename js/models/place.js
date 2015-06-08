@@ -7,11 +7,11 @@ define(["backbone", "config"], function(Backbone, Config) {
     },
 
     defaults: {
-      id: '',
+      id: null,
       name: '',
       address: '',
-      lat: '',
-      lng: ''
+      lat: null,
+      lng: null
     },
 
     parse: function(response, options) {

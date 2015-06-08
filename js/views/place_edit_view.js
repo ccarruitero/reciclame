@@ -41,10 +41,10 @@ define([
                               className: 'address', onChange: this.setModel}),
         React.createElement("input", 
                             { defaultValue: this.props.model.get('lat'),
-                              className: 'lat'}),
+                              className: 'lat', onChange: this.setModel}),
         React.createElement("input",
                             { defaultValue: this.props.model.get('lng'),
-                              className: 'lng'}),
+                              className: 'lng', onChange: this.setModel}),
         React.createElement("button", {onClick: this.updatePlace}, 'save')
       );
     }
